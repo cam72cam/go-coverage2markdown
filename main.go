@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -72,7 +73,17 @@ func (n *Node) Print(prefix string) {
 			if prefix != "" {
 				fmt.Printf("\n<blockquote>\n")
 			}
-			for key, child := range n.Children {
+
+			keys := make([]string, 0)
+
+			for key, _ := range n.Children {
+				keys = append(keys, key)
+			}
+
+			sort.Strings(keys)
+
+			for _, key := range keys {
+				child := n.Children[key]
 				child.Print(key)
 			}
 			if prefix != "" {
